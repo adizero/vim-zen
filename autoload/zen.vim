@@ -15,11 +15,15 @@ function! s:store_current_state() abort
     endif
     let g:zen_old_showmode=&showmode
     let g:zen_old_cmdheight=&cmdheight
-    let g:zen_old_signcolumn=&l:signcolumn
-    let g:zen_old_number=&l:number
-    let g:zen_old_relativenumber=&l:relativenumber
+    let g:zen_old_signcolumn=&g:signcolumn
+    let g:zen_old_local_signcolumn=&l:signcolumn
+    let g:zen_old_number=&g:number
+    let g:zen_old_local_number=&l:number
+    let g:zen_old_relativenumber=&g:relativenumber
+    let g:zen_old_local_relativenumber=&l:relativenumber
     if has('statusline')
-        let g:zen_old_statusline = &l:statusline
+        let g:zen_old_statusline = &g:statusline
+        let g:zen_old_local_statusline = &l:statusline
     endif
     let g:zen_old_airline_autocmd_exists = exists('#airline')
 endfunction
@@ -52,11 +56,15 @@ function! s:set_zen_state() abort
         " echo 'cmdheight 0 is not supported'
         let &g:cmdheight = 1
     endtry
-	" Todo(akocis): these need to be set to all tabs/windows/buffers
+	" Todo(akocis): these need to be set to all existing tabs/windows/buffers
+    let &g:signcolumn = 'no'
     let &l:signcolumn = 'no'
+    let &g:number = v:false
     let &l:number = v:false
+    let &g:relativenumber = v:false
     let &l:relativenumber = v:false
     if has('statusline')
+        let &g:statusline = '%#Normal# '
         let &l:statusline = '%#Normal# '
     endif
 endfunction
@@ -82,11 +90,15 @@ function! s:restore_old_state() abort
     let &g:showmode = g:zen_old_showmode
     let &g:cmdheight = g:zen_old_cmdheight
 	" Todo(akocis): these need to be reset in all tabs/windows/buffers
-    let &l:signcolumn = g:zen_old_signcolumn
-    let &l:number = g:zen_old_number
-    let &l:relativenumber = g:zen_old_relativenumber
+    let &g:signcolumn = g:zen_old_signcolumn
+    let &l:signcolumn = g:zen_old_local_signcolumn
+    let &g:number = g:zen_old_number
+    let &l:number = g:zen_old_local_number
+    let &g:relativenumber = g:zen_old_relativenumber
+    let &l:relativenumber = g:zen_old_local_relativenumber
     if has('statusline')
-        let &l:statusline = g:zen_old_statusline
+        let &g:statusline = g:zen_old_statusline
+        let &l:statusline = g:zen_old_local_statusline
     endif
 
     if g:zen_old_airline_autocmd_exists
