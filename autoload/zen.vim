@@ -26,6 +26,7 @@ function! s:store_current_state() abort
         let g:zen_old_local_statusline = &l:statusline
     endif
     let g:zen_old_airline_autocmd_exists = exists('#airline')
+    let g:zen_old_ale_open_list = g:ale_open_list
 endfunction
 
 function! s:set_zen_state() abort
@@ -56,7 +57,7 @@ function! s:set_zen_state() abort
         " echo 'cmdheight 0 is not supported'
         let &g:cmdheight = 1
     endtry
-	" Todo(akocis): these need to be set to all existing tabs/windows/buffers
+    " Todo(akocis): these need to be set to all existing tabs/windows/buffers
     let &g:signcolumn = 'no'
     let &l:signcolumn = 'no'
     let &g:number = v:false
@@ -67,6 +68,7 @@ function! s:set_zen_state() abort
         let &g:statusline = '%#Normal# '
         let &l:statusline = '%#Normal# '
     endif
+    let g:ale_open_list = 0
 endfunction
 
 function! s:restore_tmux() abort
@@ -89,7 +91,7 @@ function! s:restore_old_state() abort
     endif
     let &g:showmode = g:zen_old_showmode
     let &g:cmdheight = g:zen_old_cmdheight
-	" Todo(akocis): these need to be reset in all tabs/windows/buffers
+    " Todo(akocis): these need to be reset in all tabs/windows/buffers
     let &g:signcolumn = g:zen_old_signcolumn
     let &l:signcolumn = g:zen_old_local_signcolumn
     let &g:number = g:zen_old_number
@@ -104,6 +106,7 @@ function! s:restore_old_state() abort
     if g:zen_old_airline_autocmd_exists
         AirlineToggle
     endif
+    let g:ale_open_list = g:zen_old_ale_open_list
 endfunction
 
 function! s:enter_zen() abort
